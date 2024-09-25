@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Header } from './components/ui/Header';
+import { DirectorView } from './components/director/DirectorView';
+import { GeneroView } from './components/genero/GeneroView';
+import { MediaView } from './components/media/MediaView';
+import { ProductoraView } from './components/productora/ProductoraView';
+import { TipoView } from './components/tipo/TipoView';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App = () => {
+  return <Router>
+    <Header/>
+    <Switch>
+        <Route exact path='/' component={ MediaView } />
+        <Route exact path='/genero' component={ GeneroView } />
+        <Route exact path='/tipo' component={ TipoView } />
+        <Route exact path='/director' component={ DirectorView } />
+        <Route exact path='/productora' component={ ProductoraView } />
+        <Redirect to='/' />
+    </Switch>
+  </Router>
 }
 
-export default App;
+export {
+  App
+}

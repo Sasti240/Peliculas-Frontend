@@ -72,31 +72,36 @@ export const ProductoraView = () => {
 
   const handleEliminarProductora = async (productoraId) => {
     try {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: "¡Esta acción no se puede deshacer!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar'
-      }).then(async (result) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Esta acción no se puede deshacer!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        });
+
         if (result.isConfirmed) {
-          Swal.fire({
-            allowOutsideClick: false,
-            text: 'Cargando...'
-          });
-          Swal.showLoading();
+            Swal.fire({
+                allowOutsideClick: false,
+                text: 'Cargando...'
+            });
+            Swal.showLoading();
 
-          await eliminarProductora(productoraId);
-          listarProductora();
+            await eliminarProductora(productoraId);
+            listarProductora();
 
-          Swal.fire('Eliminado', 'La productora ha sido eliminada.', 'success');
+            Swal.fire('Eliminado', 'La productora ha sido eliminada.', 'success');
         }
-      });
     } catch (error) {
-      console.log(error);
-      Swal.close();
+        console.log(error);
+        Swal.close();
+        if (error.response && error.response.status === 400) {
+            Swal.fire('Error!', 'No se puede eliminar la productora porque está en uso.', 'error');
+        } else {
+            Swal.fire('Error!', 'Ocurrió un error al eliminar la productora.', 'error');
+        }
     }
   };
   

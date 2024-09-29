@@ -2,7 +2,7 @@ import { axiosInstance } from "../helper/axios-config";
 
 const getGenero = () => {
     return axiosInstance.get('genero',{
-        header:{
+        headers:{
             'Content-Type': 'application/json'
         }
     })
@@ -10,7 +10,7 @@ const getGenero = () => {
 
 const crearGenero = (data) => {
     return axiosInstance.post('genero', data, {
-        header:{
+        headers:{
             'Content-Type': 'application/json'
         }
     })
@@ -18,7 +18,7 @@ const crearGenero = (data) => {
 
 const actualizarGenero = (data, generoId) => {
     return axiosInstance.put(`genero/${generoId}`, data,{
-        header:{
+        headers:{
             'Content-Type': 'application/json'
         }
     })
@@ -26,7 +26,7 @@ const actualizarGenero = (data, generoId) => {
 
 const eliminarGenero = (generoId) => {
     return axiosInstance.delete(`genero/${generoId}`, {
-        header: {
+        headers: {
             'Content-Type': 'application/json'
         }
     });

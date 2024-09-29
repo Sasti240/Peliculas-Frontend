@@ -67,31 +67,36 @@ export const TipoView = () => {
 
   const handleEliminarTipo = async (tipoId) => {
     try {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: "¡Esta acción no se puede deshacer!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar'
-      }).then(async (result) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Esta acción no se puede deshacer!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        });
+
         if (result.isConfirmed) {
-          Swal.fire({
-            allowOutsideClick: false,
-            text: 'Cargando...'
-          });
-          Swal.showLoading();
+            Swal.fire({
+                allowOutsideClick: false,
+                text: 'Cargando...'
+            });
+            Swal.showLoading();
 
-          await eliminarTipo(tipoId);
-          listarTipo();
+            await eliminarTipo(tipoId);
+            listarTipo();
 
-          Swal.fire('Eliminado', 'El tipo ha sido eliminado.', 'success');
+            Swal.fire('Eliminado', 'El tipo ha sido eliminado.', 'success');
         }
-      });
     } catch (error) {
-      console.log(error);
-      Swal.close();
+        console.log(error);
+        Swal.close();
+        if (error.response && error.response.status === 400) {
+            Swal.fire('Error!', 'No se puede eliminar el tipo porque está en uso.', 'error');
+        } else {
+            Swal.fire('Error!', 'Ocurrió un error al eliminar el tipo.', 'error');
+        }
     }
   };
 

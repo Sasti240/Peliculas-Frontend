@@ -70,24 +70,28 @@ export const GeneroView = () => {
   
   const handleEliminarGenero = async (generoId) => {
     try {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar'
-      }).then(async (result) => {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás revertir esto!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        });
+
         if (result.isConfirmed) {
-          await eliminarGenero(generoId);
-          Swal.fire('Eliminado!', 'El género ha sido eliminado.', 'success');
-          listarGenero();
+            await eliminarGenero(generoId); 
+            Swal.fire('Eliminado!', 'El género ha sido eliminado.', 'success');
+            listarGenero();  
         }
-      });
     } catch (error) {
-      console.log(error);
-      Swal.fire('Error!', 'Ocurrió un error al eliminar el género.', 'error');
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+            Swal.fire('Error!', 'No se puede eliminar el género porque está en uso.', 'error');
+        } else {
+            Swal.fire('Error!', 'Ocurrió un error al eliminar el género.', 'error');
+        }
     }
   };
   

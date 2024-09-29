@@ -65,31 +65,30 @@ export const DirectorView = () => {
     setDirectorSeleccionado(director._id);
   };
 
-  const handleEliminarDirector = async (e, id) => {
-    e.preventDefault();
+  const handleEliminarDirector = async (directorId) => {
     try {
-      const confirm = await Swal.fire({
-        title: '¿Estás seguro?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar'
-      });
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás revertir esto!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        });
 
-      if (confirm.isConfirmed) {
-        await eliminarDirector(id);
-        listarDirector();
-        Swal.fire(
-          'Eliminado',
-          'El director ha sido eliminado.',
-          'success'
-        );
-      }
+        if (result.isConfirmed) {
+            await eliminarDirector(directorId); 
+            Swal.fire('Eliminado!', 'El director ha sido eliminado.', 'success');
+            listarDirector();  
+        }
     } catch (error) {
-      console.log(error);
-      Swal.fire('Error', 'No se pudo eliminar el director.', 'error');
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+            Swal.fire('Error!', 'No se puede eliminar el director porque está en uso.', 'error');
+        } else {
+            Swal.fire('Error!', 'Ocurrió un error al eliminar el director.', 'error');
+        }
     }
   };
 

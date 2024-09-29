@@ -18,6 +18,7 @@ export const MediaCard = (props) => {
                     <p className="card-text"><strong>Género:</strong> {media.genero.nombre}</p>
                     <p className="card-text"><strong>Director:</strong> {media.director.nombre}</p>
                     <p className="card-text"><strong>Productora:</strong> {media.productora.nombre}</p>
+                    <p className="card-text"><strong>Tipo:</strong> {media.tipo.nombre}</p>
                 </div>
                 <div className="card-footer">
                     <Link to={`media/edit/${media._id}`}>Actualizar</Link>
